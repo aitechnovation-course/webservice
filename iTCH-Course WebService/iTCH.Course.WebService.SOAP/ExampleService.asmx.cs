@@ -1,5 +1,7 @@
-﻿using System;
+﻿using iTCH.COurse.WebService.Database;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -16,10 +18,17 @@ namespace iTCH.Course.WebService.SOAP
     // [System.Web.Script.Services.ScriptService]
     public class ExampleService : System.Web.Services.WebService
     {
-
+        private string constr;
+        private mainContext db;
+        public ExampleService()
+        {
+            constr = ConfigurationManager.AppSettings["App:DBConnection"];
+            db = new mainContext(constr);
+        }
         [WebMethod]
         public string HelloWorld()
         {
+            int tmp = db.Person.Count();
             return "Hello World";
         }
     }
