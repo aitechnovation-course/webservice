@@ -1,4 +1,5 @@
 ﻿using iTCH.COurse.WebService.Database;
+using iTCH.COurse.WebService.Database.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -18,18 +19,20 @@ namespace iTCH.Course.WebServices.REST.Controllers
             constr = ConfigurationManager.AppSettings["App:DBConnection"];
             db = new mainContext(constr);
         }
-        public string Get()
+        public List<Person> Get()
         {
-            return "Hello world";
+            return db.Person.ToList();
         }
-        public string Get(int Id)
+        public Person Get(int Id)
         {
-            return "Get data Id: " + Id.ToString();
+            return db.Person.Find(Id);
         }
         [HttpPost]
-        public string Post(int Id)
+        public string Post(Person ob)
         {
-            return "Post data Id:" + Id.ToString();
+            db.Person.Add(ob);
+            db.SaveChanges();
+            return "Post data Id:" + ob.Id;
         }
         [HttpPut]
         public string Put(int Id)
